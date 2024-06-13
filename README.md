@@ -7,9 +7,6 @@
 
 #### Review Existing Unstructured Data and Diagram a New Structured Relational Data Model
 
-You can add text within a collapsed section. 
-
-You can add an image or a code block, too.
 
 ```
    puts "Hello World"
@@ -77,6 +74,7 @@ FROM receipt_item
  -- there also item code listed in 2021/02, purchased qty between 5 and 4, if steakholder needs to find the name of the brand, I suggest to find the data in 2021/1
 ```
 ![image](https://github.com/sakisakichen/Fetch-Rewards/assets/72574733/d7ec493d-6125-4a5c-962e-b7d207fa0908)
+![image](https://github.com/sakisakichen/Fetch-Rewards/assets/72574733/28d707f1-3034-431e-9935-69e80ed6fae9)
 
 
 ##### Q3 When considering average spend from receipts with 'rewardsReceiptStatus’ of ‘Accepted’ or ‘Rejected’, which is greater?
@@ -170,10 +168,25 @@ ON b.cpg_ID = cte.REWARDSPRODUCTPARTNERID
 GROUP BY 1,2
 order by cnt DESC 
 ```
+</details>
 
 
+<details>
+
+<summary>Third: Identify Data Quality Issues </summary>
+
+#### Evaluate Data Quality Issues in the Data Provided
 
 
+```sql
+```
+</details>
 
+<details>
+
+<summary>Forth:Communicate with Stakeholders</summary>
+
+#### Communicate with Stakeholders
 
 </details>
+
