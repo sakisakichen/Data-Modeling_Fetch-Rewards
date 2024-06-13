@@ -1,4 +1,15 @@
-'''sql
+
+<details>
+<summary>BRAND TABLE</summary>
+
+#### table create for brands
+
+You can add text within a collapsed section. 
+
+You can add an image or a code block, too.
+
+```sql
+
 
 -- STPE 1 : CREATE DATABASE, SCHEMA, TABLE 
 CREATE OR REPLACE  TABLE brands (
@@ -53,13 +64,5 @@ from FETCH_REWARDS.PUBLIC.BRANDS
 
 
 select * from brands_flatten; 
-
-
--- -------------------JOIN TEST -------------------------------
-
-SELECT a.brandID,a.category, a.brandname,a.barcode, b.receiptID, b.ITEM_BARCODE
-FROM brands_flatten a 
-JOIN FETCH_REWARDS.PUBLIC.RECEIPTS_FLATTEN b 
-ON a.barcode = b.ITEM_BARCODE;
-
-,,,
+```
+</details>
