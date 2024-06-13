@@ -2,7 +2,7 @@
 <details>
 <summary>BRAND TABLE</summary>
 
-#### table create for brands
+#### table create for brand
 
 --   attributes make sure its original capital or lower cases , and empty space in front
 
@@ -71,7 +71,8 @@ select * from brand;
 
 #### table create for user
 
---   attributes make sure its original capital or lower cases , and empty space in front /n
+--   attributes make sure its original capital or lower cases , and empty space in front    
+
 --  with space in each column ) , speacil character '$', no unique identifier userID1,2,3......., 
 ```sql
 
@@ -181,3 +182,119 @@ select * FROM users_flatten limit 3;
 
 ```
 </details>
+
+
+
+<details>
+<summary>RECIEIPT TABLE</summary>
+
+#### table create for receipt
+
+--   attributes make sure its original capital or lower cases , and empty space in front
+
+```sql
+CREATE OR REPLACE table receipt
+AS SELECT 
+      receiptID, bonusPointsEarned, bonusPointsEarnedReason,   
+      TO_TIMESTAMP(createDate/1000) AS createDate,
+      TO_TIMESTAMP(dateScanned/1000) AS dateScanned,
+      TO_TIMESTAMP(finishedDate/1000) AS finishedDate,
+      TO_TIMESTAMP(modifyDate/1000) AS modifyDate,
+      TO_TIMESTAMP(pointsAwardedDate/1000) AS pointsAwardedDate,
+      pointsEarned, 
+      TO_TIMESTAMP(purchaseDate/1000) AS purchaseDate,
+      purchasedItemCount,rewardsReceiptStatus,totalSpent, userID
+FROM (
+SELECT 
+    JSON_DATA:_id.     "$oid"::VARCHAR AS receiptID,
+    JSON_DATA:bonusPointsEarned::INT AS bonusPointsEarned,
+    JSON_DATA:bonusPointsEarnedReason::STRING AS bonusPointsEarnedReason,
+    JSON_DATA:createDate. "$date" ::NUMBER AS createDate,
+    JSON_DATA:dateScanned. "$date" ::NUMBER AS dateScanned,
+    JSON_DATA:finishedDate. "$date" ::NUMBER AS finishedDate,
+    JSON_DATA:modifyDate. "$date" ::NUMBER AS modifyDate,
+    JSON_DATA:pointsAwardedDate. "$date" ::NUMBER AS pointsAwardedDate,
+    JSON_DATA:pointsEarned::FLOAT AS pointsEarned,
+    JSON_DATA:purchaseDate. "$date" ::NUMBER AS purchaseDate,
+    JSON_DATA:purchasedItemCount::INT AS purchasedItemCount,
+    JSON_DATA:rewardsReceiptStatus::STRING AS rewardsReceiptStatus,
+    JSON_DATA:totalSpent::FLOAT AS totalSpent,
+    JSON_DATA:userId::VARCHAR AS userID
+
+
+from FETCH_REWARDS.PUBLIC.RECEIPTS
+);
+select * FROM RECEIPT;
+
+```
+</details>
+
+
+<details>
+<summary>RECIEIPT_ITEM TABLE</summary>
+
+#### table create for receipt_item
+
+--   attributes make sure its original capital or lower cases , and empty space in front
+
+```sql
+CREATE OR REPLACE table receipt_item
+AS SELECT concat(receiptID,'-',partnerItemId) as receipt_item_pk, t.*
+from (
+SELECT 
+    JSON_DATA:_id.     "$oid"::VARCHAR AS receiptID
+    ,item.value:"barcode"::STRING AS item_barcode
+    ,item.value:description::STRING AS item_description
+    ,item.value:finalPrice::FLOAT AS item_finalPrice
+    ,item.value:itemPrice::FLOAT AS itemPrice
+    ,item.value:partnerItemId::STRING AS partnerItemId
+    ,item.value:quantityPurchased::NUMBER AS item_quantityPurchased
+    ,item.value:rewardsGroup::VARCHAR AS rewardsGroup
+    ,item.value:rewardsProductPartnerId::VARCHAR AS rewardsProductPartnerId
+    ,item.value:needsFetchReview::Boolean AS needsFetchReview
+    ,item.value:needsFetchReviewReason::Varchar as needsFetchReviewReason
+from FETCH_REWARDS.PUBLIC.RECEIPTS 
+,LATERAL FLATTEN(input => FETCH_REWARDS.PUBLIC.RECEIPTS.JSON_DATA:rewardsReceiptItemList) as item
+ORDER BY  item_barcode,needsFetchReview,rewardsgroup
+)t;
+
+
+
+```
+</details>
+
+<details>
+<summary>USER_FLAGGED TABLE</summary>
+
+#### table create for USER_FLAGGED
+
+--   attributes make sure its original capital or lower cases , and empty space in front
+
+```sql
+ CREATE OR REPLACE TABLE user_flagged 
+ AS SELECT  CONCAT(receiptID, '-', userFlaggedBarcode) AS user_flag_pk,
+            t.*
+ FROM 
+ (
+    SELECT 
+        JSON_DATA:_id.     "$oid"::VARCHAR AS receiptID,
+        item.value:userFlaggedBarcode::VARCHAR AS userFlaggedBarcode,
+        item.value:userFlaggedNewItem::BOOLEAN AS userFlaggedNewItem,
+        item.value:userFlaggedPrice::FLOAT AS userFlaggedPrice,
+        item.value:userFlaggedQuantity::NUMBER AS userFlaggedQuantity,
+        item.value:userFlaggedDescription::VARCHAR AS userFlaggedDescription,
+        item.value:needsFetchReview::BOOLEAN AS needsFetchReview,
+        item.value:needsFetchReviewReason::VARCHAR AS needsFetchReviewReason
+    FROM FETCH_REWARDS.PUBLIC.RECEIPTS  
+    ,LATERAL FLATTEN(input => FETCH_REWARDS.PUBLIC.RECEIPTS.JSON_DATA:rewardsReceiptItemList) AS item
+)t
+
+WHERE needsFetchReviewReason = 'USER_FLAGGED'
+ORDER BY userFlaggedBarcode, userFlaggedNewItem DESC, userFlaggedPrice, userFlaggedQuantity, userFlaggedDescription;
+    
+
+
+
+```
+</details>
+
