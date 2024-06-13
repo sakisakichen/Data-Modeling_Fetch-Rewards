@@ -4,9 +4,7 @@
 
 #### table create for brands
 
-You can add text within a collapsed section. 
-
-You can add an image or a code block, too.
+--   attributes make sure its original capital or lower cases , and empty space in front
 
 ```sql
 
@@ -43,7 +41,7 @@ SELECT * FROM brands LIMIT 5;
 
 --STEP6 FLATTEN
 --   attributes make sure its original capital or lower cases 
-CREATE OR REPLACE table brands_flatten 
+CREATE OR REPLACE table brand
 AS SELECT *
 from(
  SELECT 
@@ -63,6 +61,6 @@ from FETCH_REWARDS.PUBLIC.BRANDS
 );
 
 
-select * from brands_flatten; 
+select * from brand; 
 ```
 </details>
