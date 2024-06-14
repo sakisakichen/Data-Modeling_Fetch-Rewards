@@ -173,19 +173,58 @@ order by cnt DESC
 <summary>Third: Identify Data Quality Issues </summary>
 
 #### Evaluate Data Quality Issues in the Data Provided
+```sql
+(1) Data quality issue when importing data 
+    (1)-a. inconsistant data type
+        -- bonus points earned is INT but point is FLOAT => BONUS POINT ALWAYS INT ?
+        -- ITEM PRICE & ITEM final price should be float same as total spent 
+        -- related date attributes should be timestamp 
 
+    (1)-b. Attributes not standardized 
+         when importing data from JSON file, there are some empty spaces or speacil character '$' in the attributes, and not consisitant with 
+        lower/capital cases, it may causing data importing null value.
+
+sample SQL
+SELECT 
+    JSON_DATA:_id.     "$oid"::VARCHAR AS receiptID,
+    JSON_DATA:bonusPointsEarned::INT AS bonusPointsEarned,
+    JSON_DATA:bonusPointsEarnedReason::STRING AS bonusPointsEarnedReason,
+    JSON_DATA:createDate. "$date" ::NUMBER AS createDate,
+    JSON_DATA:dateScanned. "$date" ::NUMBER AS dateScanned,
+    JSON_DATA:finishedDate. "$date" ::NUMBER AS finishedDate,
+    JSON_DATA:modifyDate. "$date" ::NUMBER AS modifyDate,
+    JSON_DATA:pointsAwardedDate. "$date" ::NUMBER AS pointsAwardedDate,
+    JSON_DATA:pointsEarned::FLOAT AS pointsEarned,
+    JSON_DATA:purchaseDate. "$date" ::NUMBER AS purchaseDate,
+    JSON_DATA:purchasedItemCount::INT AS purchasedItemCount,
+    JSON_DATA:rewardsReceiptStatus::STRING AS rewardsReceiptStatus,
+    JSON_DATA:totalSpent::FLOAT AS totalSpent,
+    JSON_DATA:userId::VARCHAR AS userID
+
+
+from FETCH_REWARDS.PUBLIC.RECEIPTS
+
+```
 
 ```sql
+(2) Missing Value Handling 
+    (2)-a. item_barcode with null value in RECEIPT_ITEM table, need to verify if null value needs to fill with other value or ok with it.
+            -- fill with other value
+            SELECT IFNULL(item_barcode,0) as item_barcode
+
 ```
-</details>
 
-<details>
+```sql
+(3) Duplicated attributes
+    (3)-a. item_finalprice & itemprice in RECEIPT_ITEM table got the identical data, need to verify if the finalprice should included tax 
+```
+```sql
+(4) Recalculate Quantities and Total
+    (4)-a. Verify purchasedItemCount and totalSpent based on corrected item list.
 
-<summary>Forth:Communicate with Stakeholders</summary>
+    SELECT a.receiptID , sum(b.item_finalprice)over(partition by a.receiptID) as sumprice, totalspent
+    FROM receipt a 
+    JOIN receipt_item b 
+    ON a.receiptID = b.receiptID;
 
-#### Communicate with Stakeholders
-
-preventTargetGapPoints   => 不知道什麼用途  null /true
-
-</details>
-
+```
