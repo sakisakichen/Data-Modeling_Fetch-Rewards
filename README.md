@@ -188,5 +188,7 @@ order by cnt DESC
 
 #### Communicate with Stakeholders
 
+preventTargetGapPoints   => 不知道什麼用途  null /true
+
 </details>
 
