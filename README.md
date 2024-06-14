@@ -234,13 +234,48 @@ from FETCH_REWARDS.PUBLIC.RECEIPTS
 <summary>Forth: Communicate with Stakeholders </summary>
 
 ### Communicate with Stakeholders about Data concern
+Dear Stakeholder,
 
-You can add text within a collapsed section. 
+I hope this message finds you well.  There are some requests about the current dataset and we identified several data quality issues that need to be clarified.
 
-You can add an image or a code block, too.
+1. Questions About the Data: <be> 
+  * Bonus Points Data Type: Should bonus points always be an integer, or is there a scenario where they could be a float?   <br>
+  * Missing Item Barcodes: How should we handle items with null barcodes? Should we fill these with a placeholder value, or is it acceptable to leave them as null?<br>
+  * Item Prices: Should the item_finalprice include tax, and should it always be consistent with itemprice?<br>
+  * Attribute Standardization: Are there specific guidelines for attribute naming conventions to avoid inconsistencies in cases and special characters?<br>
 
-```ruby
-   puts "Hello World"
-```
+2. Discovery of Data Quality Issues:<br>
+  We discovered these data quality issues during the import process and subsequent data analysis. Here are the specific concerns identified:<br>
+  * Inconsistent Data Types: bonusPointsEarned is an integer, whereas pointsEarned is a float. Similarly, itemPrice, item_finalprice, and totalSpent should consistently be floats. Date attributes should be timestamps.<br>
+  * Non-standardized Attributes: Some attributes contain empty spaces or special characters like '$' and are inconsistent in their casing (lower/capital), leading to null values during data import.<br>
+  * Missing Values: Instances of null values in item_barcode in the RECEIPT_ITEM table, and the related attributes in other tables.<br>
+
+3. Information Needed to Resolve Issues:<br>
+  To effectively resolve these data quality issues, we need clarification on the following:<br>
+ * The intended data type for bonus points and if any adjustments are necessary for item prices and date attributes.<br>
+ * Guidelines for handling null values in item_barcode.<br>
+ * Clarification on whether item_finalprice should include tax.<br>
+ * Standardization rules for attribute naming conventions to avoid inconsistencies.<br>
+
+4. Additional Information Needed:<br>
+  To optimize the data assets we are creating, it would be helpful to have:<br>
+  * Detailed documentation on the expected data schema, including data types and naming conventions.<br>
+  * A comprehensive list of required fields and acceptable default values for missing data.<br>
+
+5. Performance and Scaling Concerns:<br>
+  In production, we anticipate the following performance and scaling concerns:<br>
+  * Data Consistency: Ensuring data type consistency and standardized attributes across large datasets can be challenging.<br>
+  * Scalability: Efficient handling of increased data volume without compromising performance.<br>
+  * Data Validation: Implementing robust data validation mechanisms to catch inconsistencies and missing values during the import process.<br>
+To address these concerns, we plan to:<br>
+  * Optimize database indexing and query performance to handle large datasets efficiently.<br>
+  * Regularly audit and clean the data to maintain high quality.<br>
+
+Your input and guidance on these points would be invaluable as we work to resolve the identified issues and enhance the quality of our data. Please let us know if there are any additional considerations or specific requirements we should take into account.
+
+Thank you for your attention to these matters. We look forward to your feedback and suggestions.
+
+Best regards,
+
 
 </details>
