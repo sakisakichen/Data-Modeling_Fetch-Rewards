@@ -7,7 +7,7 @@
 
 #### Review Existing Unstructured Data and Diagram a New Structured Relational Data Model
 
-
+[ER Diagram](https://github.com/sakisakichen/Fetch-Rewards/blob/main/Fetch%20Rewards_ER.pdf)
 
 </details>
 
