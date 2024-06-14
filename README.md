@@ -8,9 +8,6 @@
 #### Review Existing Unstructured Data and Diagram a New Structured Relational Data Model
 
 
-```
-   puts "Hello World"
-```
 
 </details>
 
