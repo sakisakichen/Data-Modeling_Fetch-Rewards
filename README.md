@@ -228,3 +228,19 @@ from FETCH_REWARDS.PUBLIC.RECEIPTS
     ON a.receiptID = b.receiptID;
 
 ```
+</details>
+<details>
+
+<summary>Forth: Communicate with Stakeholders </summary>
+
+### Communicate with Stakeholders about Data concern
+
+You can add text within a collapsed section. 
+
+You can add an image or a code block, too.
+
+```ruby
+   puts "Hello World"
+```
+
+</details>
