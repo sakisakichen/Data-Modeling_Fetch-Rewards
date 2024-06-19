@@ -1,5 +1,14 @@
 # Fetch-Rewards
 
+The assignment included reviewing unstructured JSON data and creating a structured relational data model, generating queries to answer specific business questions, identifying data quality issues, and communicating findings to stakeholders. 
+by utilizing data for querying and data analysis, providing detailed documentation and notes to support my approaches. 
+
+Tasks Completed:  
+(1) Reviewed unstructured JSON data and developed a structured relational data model.    
+(2) Wrote SQL queries to address predetermined business questions.    
+(3) Identified and addressed data quality issues.  
+(4) Constructed an email/slack message to explain data-related findings to stakeholders, showcasing effective communication skills in a non-technical context.  
+
 
 <details>
 
